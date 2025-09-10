@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>micro:bit 明るさデータ Viewer</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+  <h1>Room1 の明るさデータ</h1>
+  <p id="light-value">読み込み中...</p>
 
+  <script>
+    // Firebase 設定（あなたの Firebase 設定に置き換えてください）
+    const firebaseConfig = {
+      apiKey: "AIzaSyAt9FoenejYFhDIDZg5BTYfcl0x-czJ4v4",
+      authDomain: "server-f5ca2.firebaseapp.com",
+      databaseURL: "https://server-f5ca2-default-rtdb.firebaseio.com",
+      projectId: "server-f5ca2",
+      storageBucket: "server-f5ca2.appspot.com",
+      messagingSenderId: "911418656641",
+      appId: "1:911418656641:web:00d6d168eba14ebf984a80",
+      measurementId: "G-DSE6BC8WEF"
+    };
+
+    // Firebase 初期化
+    firebase.initializeApp(firebaseConfig);
+
+    // データ取得と表示
+    const lightValueElement = document.getElementById('light-value');
+    const roomRef = firebase.database().ref('light/room1');
+    roomRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        lightValueElement.textContent = `明るさ: ${data.value} lx (更新日時: ${new Date(data.timestamp).toLocaleString()})`;
+      } else {
+        lightValueElement.textContent = 'データが存在しません';
+      }
+    });
+  </script>
+</body>
+</html>
